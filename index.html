@@ -1,6 +1,33 @@
 <head>
-
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simon</title>
 </head>
 <body font-family="Arial">
-    <h1>Simon</h1>
+    <header>
+    <h1>Simon&reg;</h1>
+        <menu>
+            <ul>
+                <li><a href="index.html">Home</a> (This Page)</li>
+                <li><a href="play.html">Play Simon Says</a></li>
+                <li><a href="scores.html">Game Scores</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </menu>
+    </header>
+    <hr /> <!--Line Break -->
+    <main>
+        <h1>Home</h1>
+        <p>Login to Play!</p>
+        <form method="get" action="play.html">
+            <input type="text" placeholder="Name" id="name"/>
+            <button id="login">Login</button>
+        </form>
+    </main>
+    <hr /> <!--Line Break -->
+    <footer>
+        <p>Peter Fullmer</p>
+        <a href="https://github.com/pf274/simon.git">Github Repository</a>
+    </footer>
 </body>
