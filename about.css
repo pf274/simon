@@ -5,10 +5,6 @@ body {
     flex: 1;
 }
 
-#welcomeCard {
-    width: 18rem;
-}
-
 html {
     height: 100%;
 }
