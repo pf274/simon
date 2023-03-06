@@ -61,8 +61,15 @@ class Game {
         // sequence
         this.sequence = [];
         this.player_sequence = [];
+
+        // username
+        const nameElement = [...document.getElementsByClassName("player-name")][0];
+        nameElement.textContent = this.getPlayerName();
     }
 
+    getPlayerName() {
+        return localStorage.getItem('username') ?? 'Anonymous';
+    }
     playSequence() {
         this.state = "sequence";
         let new_button = this.buttons[Math.floor(Math.random() * (this.buttons.length))];
@@ -125,10 +132,22 @@ class Game {
                 }
             } else {
                 // lost game!
+                this.state = "lost";
                 setTimeout(() => {
                     this.playSound("lose.wav");
-                    this.state = "lost";
-                }, 1000 * 0.25);
+                    let lose_animation = setInterval(() => {
+                        for (const button of this.buttons) {
+                            let colors = [button_info[button.className].original_color, button_info[button.className].lighter_color];
+                            button.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        }
+                    }, 1000 * 0.05);
+                    setTimeout(() => {
+                        clearInterval(lose_animation);
+                        for (const button of this.buttons) {
+                            button.style.backgroundColor = button_info[button.className].original_color;
+                        }
+                    }, 1000 * 0.8);
+                }, 1000 * 0.5);
             }
         }
     }
