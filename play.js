@@ -35,29 +35,38 @@ class Game {
     buttons;
     sequence;
     state;
-    toneObjects;
+    audioObjects;
     player_sequence;
 
     constructor() {
         // buttons
         let buttonContainer = [...document.getElementsByClassName("button-container")][0];
         this.buttons = buttonContainer.children;
+        // colors
+        for (const button of this.buttons) {
+            let computedStyle = getComputedStyle(button);
+            let original_color = computedStyle.backgroundColor;
+            let lighter_color = getLighterColor(original_color);
+            button_info[button.className].original_color = original_color;
+            button_info[button.className].lighter_color = lighter_color;
+        }
         // sounds
-        this.toneObjects = {};
+        this.audioObjects = {};
         for (const tone of ["c", "d", "a", "f"]) {
             let audioObject = new Audio(`tones/${tone}.wav`);
-            this.toneObjects[tone] = audioObject;
+            this.audioObjects[`tones/${tone}.wav`] = audioObject;
         }
+        let audioObject = new Audio("lose.wav");
+        this.audioObjects["lose.wav"] = audioObject;
         // sequence
         this.sequence = [];
         this.player_sequence = [];
     }
 
     playSequence() {
-        this.state = "play";
+        this.state = "sequence";
         let new_button = this.buttons[Math.floor(Math.random() * (this.buttons.length))];
         this.sequence.push(new_button);
-        this.score = this.sequence.length;
         let remaining_sequence = [...this.sequence];
         let interval = setInterval(() => {
             let button = remaining_sequence.shift();
@@ -71,8 +80,14 @@ class Game {
 
     }
 
-    playSound(tone) {
-        const audio = this.toneObjects[tone];
+    updateScore(new_score) {
+        this.score = new_score;
+        let scoreDisplay = [...document.getElementsByClassName("score")][0];
+        scoreDisplay.innerHTML = new_score;
+    }
+
+    playSound(sound) {
+        const audio = this.audioObjects[sound];
         // play the sound
         audio.volume = 0.4;
         audio.pause();
@@ -82,13 +97,12 @@ class Game {
 
     doSimonButton(button) {
         // sound
-        this.playSound(button_info[button.className].tone);
+        this.playSound(`tones/${button_info[button.className].tone}.wav`);
         
         // color
-        let computedStyle = getComputedStyle(button);
-        let original_color = computedStyle.backgroundColor;
-        let new_color = getLighterColor(original_color);
-        button.style.backgroundColor = new_color;
+        let original_color = button_info[button.className].original_color;
+        let lighter_color = button_info[button.className].lighter_color;
+        button.style.backgroundColor = lighter_color;
         setTimeout(() => {
             button.style.backgroundColor = original_color;
         }, 1000 * 0.3);
@@ -103,14 +117,18 @@ class Game {
             let verified = this.verifyPlayerSequence();
             if (verified) {
                 if (this.player_sequence.length >= this.sequence.length) {
-                    this.state = "new sequence"
+                    this.state = "success";
+                    this.updateScore(this.sequence.length);
                     setTimeout( () => {
                         this.playSequence();
                     }, 1000);
                 }
             } else {
                 // lost game!
-                this.restartGame();
+                setTimeout(() => {
+                    this.playSound("lose.wav");
+                    this.state = "lost";
+                }, 1000 * 0.25);
             }
         }
     }
@@ -127,14 +145,14 @@ class Game {
     restartGame() {
         this.player_sequence = [];
         this.sequence = [];
+        this.updateScore(0);
         setTimeout(() => {
             this.playSequence();
-        }, 1000 * 2);
+        }, 1000 * 0.5);
     }
 }
 
 const game = new Game();
-
 
 let resetButton = document.getElementById("resetButton");
 resetButton.addEventListener("click", () => {
