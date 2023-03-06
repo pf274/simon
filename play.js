@@ -37,6 +37,7 @@ class Game {
     state;
     audioObjects;
     player_sequence;
+    username;
 
     constructor() {
         // buttons
@@ -133,6 +134,27 @@ class Game {
             } else {
                 // lost game!
                 this.state = "lost";
+                // save score
+                let scores = localStorage.getItem("scores") ?? "{}";
+                scores = JSON.parse(scores);
+                let name = this.getPlayerName();
+                if (name in scores) {
+                    if (scores[name].score < this.score) {
+                        scores[name] = {
+                            name,
+                            score: this.score,
+                            date: new Date().toLocaleDateString(),
+                        };
+                    }
+                } else {
+                    scores[name] = {
+                        name: name,
+                        score: this.score,
+                        date: new Date().toLocaleDateString(),
+                    };
+                }
+                localStorage.setItem("scores", JSON.stringify(scores));
+                // do animation
                 setTimeout(() => {
                     this.playSound("lose.wav");
                     let lose_animation = setInterval(() => {
