@@ -63,8 +63,8 @@ main {
 .button-bottom-left {
     border-radius: 0 0 0 100%;
     margin: 0 0 20px 20px;
-    background-color: yellow;
-    border: thick solid rgb(130, 124, 13);
+    background-color: rgb(104, 104, 0);
+    border: thick solid rgb(51, 48, 0);
   }
   
 .button-bottom-right {
