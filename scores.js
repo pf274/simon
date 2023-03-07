@@ -9,25 +9,35 @@ function loadScores() {
     let top_scores = Object.values(scores).map((player_data) => player_data.score);
     top_scores.sort();
     top_scores.reverse();
+    let rows = [];
     if (Object.keys(scores).length) {
-      for (const [i, score] of Object.entries(scores)) {
+      for (const [player, info] of Object.entries(scores)) {
         const positionTdElement = document.createElement('td');
         const nameTdElement = document.createElement('td');
         const scoreTdElement = document.createElement('td');
         const dateTdElement = document.createElement('td');
   
-        positionTdElement.textContent = top_scores.indexOf(score.score) + 1;
-        nameTdElement.textContent = score.name;
-        scoreTdElement.textContent = score.score;
-        dateTdElement.textContent = score.date;
+        positionTdElement.textContent = top_scores.indexOf(info.score) + 1;
+        nameTdElement.textContent = info.name;
+        scoreTdElement.textContent = info.score;
+        dateTdElement.textContent = info.date;
   
-        const rowEl = document.createElement('tr');
-        rowEl.appendChild(positionTdElement);
-        rowEl.appendChild(nameTdElement);
-        rowEl.appendChild(scoreTdElement);
-        rowEl.appendChild(dateTdElement);
-  
-        tableBodyElement.appendChild(rowEl);
+        const rowElement = document.createElement('tr');
+        rowElement.appendChild(positionTdElement);
+        rowElement.appendChild(nameTdElement);
+        rowElement.appendChild(scoreTdElement);
+        rowElement.appendChild(dateTdElement);
+        rows.push({
+          score: info.score,
+          element: rowElement,
+        });
+      }
+      // sort the rows by score
+      rows.sort((a, b) => {
+        return a.score - b.score;
+      });
+      for (const row of rows) {
+        tableBodyElement.appendChild(row.element);
       }
     } else {
       tableBodyElement.innerHTML = '<tr><td colSpan=4>Be the first to score</td></tr>';

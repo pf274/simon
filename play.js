@@ -138,6 +138,7 @@ class Game {
                 let scores = localStorage.getItem("scores") ?? "{}";
                 scores = JSON.parse(scores);
                 let name = this.getPlayerName();
+                let new_high = false;
                 if (name in scores) {
                     if (scores[name].score < this.score) {
                         scores[name] = {
@@ -145,6 +146,7 @@ class Game {
                             score: this.score,
                             date: new Date().toLocaleDateString(),
                         };
+                        new_high = true;
                     }
                 } else {
                     scores[name] = {
@@ -152,8 +154,15 @@ class Game {
                         score: this.score,
                         date: new Date().toLocaleDateString(),
                     };
+                    new_high = true;
                 }
-                localStorage.setItem("scores", JSON.stringify(scores));
+                if (new_high) {
+                    $("#scoreToast").toast("show");
+                    setTimeout(() => {
+                        // $("#scoreToast").toast("hide");
+                    }, 1000 * 2)
+                    localStorage.setItem("scores", JSON.stringify(scores));
+                }
                 // do animation
                 setTimeout(() => {
                     this.playSound("lose.wav");
@@ -208,3 +217,8 @@ for (const button of buttons) {
         game.sendButtonInput(event.currentTarget);
     })
 }
+
+let closeToast = document.getElementById("closeToast");
+closeToast.addEventListener("click", (event) => {
+    $("#scoreToast").toast("hide");
+})
