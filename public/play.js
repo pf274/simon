@@ -116,7 +116,7 @@ class Game {
         }, 1000 * 0.3);
     }
 
-    sendButtonInput(button) {
+    async sendButtonInput(button) {
         if (this.state === "player") {
             this.doSimonButton(button);
             let button_name = button.className;
@@ -135,34 +135,26 @@ class Game {
                 // lost game!
                 this.state = "lost";
                 // save score
-                let scores = localStorage.getItem("scores") ?? "{}";
-                scores = JSON.parse(scores);
                 let name = this.getPlayerName();
-                let new_high = false;
-                if (name in scores) {
-                    if (scores[name].score < this.score) {
-                        scores[name] = {
-                            name,
-                            score: this.score,
-                            date: new Date().toLocaleDateString(),
-                        };
-                        new_high = true;
-                    }
-                } else {
-                    scores[name] = {
+                let score = this.score;
+                console.log(`Name: ${name}, Score: ${score}`);
+                const new_high = await fetch("/api/score", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
                         name: name,
-                        score: this.score,
-                        date: new Date().toLocaleDateString(),
-                    };
-                    new_high = true;
-                }
-                if (new_high) {
-                    $("#scoreToast").toast("show");
-                    setTimeout(() => {
-                        // $("#scoreToast").toast("hide");
-                    }, 1000 * 2)
-                    localStorage.setItem("scores", JSON.stringify(scores));
-                }
+                        score: score,
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                });
+                debugger;
+                console.log(`New High Score? ${new_high ? "Yes!" : "No."}: ${JSON.stringify(new_high)}`);
+                if (new_high) $("#scoreToast").toast("show");
                 // do animation
                 setTimeout(() => {
                     this.playSound("lose.wav");

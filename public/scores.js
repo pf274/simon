@@ -1,9 +1,6 @@
-function loadScores() {
-    let scores = {};
-    const scoresText = localStorage.getItem('scores');
-    if (scoresText) {
-      scores = JSON.parse(scoresText);
-    }
+async function loadScores() {
+  const response = await fetch("/api/scores");
+  const scores = await response.json();
   
     const tableBodyElement = document.getElementById("tableBody");
     let top_scores = Object.values(scores).map((player_data) => player_data.score);
@@ -11,7 +8,7 @@ function loadScores() {
     top_scores.reverse();
     let rows = [];
     if (Object.keys(scores).length) {
-      for (const [player, info] of Object.entries(scores)) {
+      for (const info of Object.values(scores)) {
         const positionTdElement = document.createElement('td');
         const nameTdElement = document.createElement('td');
         const scoreTdElement = document.createElement('td');
@@ -44,4 +41,4 @@ function loadScores() {
     }
   }
   
-  loadScores();
+loadScores();
