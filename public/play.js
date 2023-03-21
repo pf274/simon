@@ -152,7 +152,6 @@ class Game {
                         return response.json();
                     }
                 });
-                debugger;
                 console.log(`New High Score? ${new_high ? "Yes!" : "No."}: ${JSON.stringify(new_high)}`);
                 if (new_high) $("#scoreToast").toast("show");
                 // do animation
