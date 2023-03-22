@@ -119,8 +119,6 @@ class Game {
     async sendButtonInput(button) {
         if (this.state === "player") {
             this.doSimonButton(button);
-            let button_name = button.className;
-            console.log(button_name);
             this.player_sequence.push(button);
             let verified = this.verifyPlayerSequence();
             if (verified) {
@@ -137,7 +135,6 @@ class Game {
                 // save score
                 let name = this.getPlayerName();
                 let score = this.score;
-                console.log(`Name: ${name}, Score: ${score}`);
                 const new_high = await fetch("/api/score", {
                     method: "POST",
                     headers: {
@@ -152,7 +149,7 @@ class Game {
                         return response.json();
                     }
                 });
-                console.log(`New High Score? ${new_high ? "Yes!" : "No."}: ${JSON.stringify(new_high)}`);
+                console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
                 if (new_high) $("#scoreToast").toast("show");
                 // do animation
                 setTimeout(() => {

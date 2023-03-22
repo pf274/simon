@@ -1,6 +1,7 @@
 const express = require('express');
+const {MongoClient} = require('mongodb');
 const app = express();
-
+let scoreCollection;
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
@@ -16,39 +17,48 @@ app.use(`/api`, apiRouter);
 
 let scores = {};
 // GetScores
-apiRouter.get('/scores', (_req, res) => {
-  res.send(scores);
+apiRouter.get('/scores', async (_req, res) => {
+  let all_scores = await getScores();
+  res.send(all_scores);
 });
 
 // SubmitScore
-apiRouter.post('/score', (req, res) => {
-  let {new_high, new_scores} = updateScores(req.body, scores);
-  scores = new_scores;
+apiRouter.post('/score', async (req, res) => {
+  let new_high = await updateScores(req.body);
   res.send(new_high);
 });
 
-function updateScores(data, old_scores) {
+async function getScores() {
+  let cursor = scoreCollection.find();
+  return cursor.toArray();
+}
+async function updateScores(data) {
   let new_high = false;
   let {name, score} = data;
-  let new_scores = {...old_scores};
-  if (name in new_scores) {
-      if (new_scores[name].score < score) {
-        new_scores[name] = {
-              name: name,
-              score: score,
-              date: new Date().toLocaleDateString(),
-          };
+  let all_scores = await getScores();
+  let score_records = {};
+  for (const record of all_scores) {
+    score_records[record.name] = record;
+  }
+  if (name in score_records) {
+      if (score_records[name].score < score) {
+        let query = {name: name};
+        scoreCollection.replaceOne(query, {
+          name: name,
+          score: score,
+          date: new Date().toLocaleDateString()
+        });
         new_high = true;
       }
   } else {
-    new_scores[name] = {
-          name: name,
-          score: score,
-          date: new Date().toLocaleDateString(),
-      };
+    scoreCollection.insertOne({
+      name: name,
+      score: score,
+      date: new Date().toLocaleDateString()
+    });
     new_high = true;
   }
-  return {new_high, new_scores};
+  return new_high;
 }
 
 // Return the application's default page if the path is unknown
@@ -59,3 +69,15 @@ app.use((_req, res) => {
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+const username = process.env.MONGOUSER;
+const password = process.env.MONGOPASSWORD;
+const hostname = process.env.MONGOHOSTNAME;
+
+async function dbSetup() {
+  const url = `mongodb+srv://${username}:${password}@${hostname}`;
+  const client = new MongoClient(url);
+  scoreCollection = client.db('simon').collection('scores');
+}
+
+dbSetup();
