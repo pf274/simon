@@ -4,10 +4,8 @@ async function loadScores() {
   const tableBodyElement = document.getElementById("tableBody");
   let top_scores = Object.values(scores);
   top_scores.sort((a, b) => {
-    return a.score - b.score;
+    return b.score - a.score;
   });
-  top_scores.reverse();
-  console.log(top_scores);
   top_scores = top_scores.slice(0, Math.min(top_scores.length, 10));
   let rows = [];
   if (top_scores.length < 1) {
