@@ -42,11 +42,29 @@
                     <h1 class="card-title">Welcome</h1>
                     <p class="card-text">Login to Play!</p>
                     <div>
-                        <input type="text" placeholder="Name" id="name"/>
+                        <input type="text" placeholder="Username" id="username"/>
+                        <input type="password" placeholder="Password" id="password"/>
                         <button id="login" onclick="login()">Login</button>
+                        <button id="Sign Up" onclick="signup()">Sign Up</button>
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="msgModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content text-dark">
+                    <div class="modal-body">error message here</div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </main>
         <footer class="bg-body-tertiary text-lg-start footer">
             <div class="container p-4 text-center">

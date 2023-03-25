@@ -148,6 +148,8 @@ class Game {
                     if (response.ok) {
                         return response.json();
                     }
+                }).catch((err) => {
+                    console.log(err);
                 });
                 console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
                 if (new_high) $("#scoreToast").toast("show");
