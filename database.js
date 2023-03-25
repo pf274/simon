@@ -16,11 +16,12 @@ const client = new MongoClient(url);
 const userCollection = client.db('simon').collection('users');
 const scoreCollection = client.db('simon').collection('scores');
 
-function getUser(email) {
-  return userCollection.findOne({ email: email });
+async function getUser(username) {
+  let response = await userCollection.findOne({ username: username });
+  return response;
 }
 
-function getUserByToken(token) {
+async function getUserByToken(token) {
   return userCollection.findOne({ token: token });
 }
 

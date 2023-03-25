@@ -1,5 +1,4 @@
 const express = require('express');
-const {MongoClient} = require('mongodb');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const app = express();
@@ -25,7 +24,8 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth token for a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  if (await DB.getUser(req.body.username)) {
+  let userExists = await DB.getUser(req.body.username);
+  if (userExists) {
     res.status(409).send({ msg: 'Existing user' });
   } else {
     const user = await DB.createUser(req.body.username, req.body.password);
