@@ -158,7 +158,9 @@ class Game {
                     console.log(err);
                 });
                 // console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
-                if (new_high) $("#scoreToast").toast("show");
+                if (new_high) {
+                    $("#scoreToast").toast("show");
+                }
                 this.broadcastEvent(this.getPlayerName(), GameEndEvent, score);
                 // do animation
                 setTimeout(() => {
@@ -212,7 +214,7 @@ class Game {
         this.socket.onmessage = async (event) => {
             const msg = JSON.parse(await event.data.text());
             if (msg.type === GameEndEvent) {
-                this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
+                this.displayMsg('player', msg.from, `scored ${msg.value}`);
             } else if (msg.type === GameStartEvent) {
                 this.displayMsg('player', msg.from, `started a new game`);
             }
@@ -260,7 +262,7 @@ closeScoreToast.addEventListener("click", (event) => {
     $("#scoreToast").toast("hide");
 })
 
-let closeWebToast = document.getElementById("closeScoreToast");
+let closeWebToast = document.getElementById("closeWebToast");
 closeWebToast.addEventListener("click", (event) => {
     $("#webSocketToast").toast("hide");
 })
