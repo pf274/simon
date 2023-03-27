@@ -151,7 +151,7 @@ class Game {
                 }).catch((err) => {
                     console.log(err);
                 });
-                console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
+                // console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
                 if (new_high) $("#scoreToast").toast("show");
                 // do animation
                 setTimeout(() => {
@@ -190,6 +190,45 @@ class Game {
             this.playSequence();
         }, 1000 * 0.5);
     }
+      // Functionality for peer communication using WebSocket
+
+    configureWebSocket() {
+        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+        this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+        this.socket.onopen = (event) => {
+            this.displayMsg('system', 'game', 'connected');
+        };
+        this.socket.onclose = (event) => {
+            this.displayMsg('system', 'game', 'disconnected');
+        };
+        this.socket.onmessage = async (event) => {
+            const msg = JSON.parse(await event.data.text());
+            if (msg.type === GameEndEvent) {
+                this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
+            } else if (msg.type === GameStartEvent) {
+                this.displayMsg('player', msg.from, `started a new game`);
+            }
+        };
+    }
+
+    displayMsg(cls, from, msg) {
+        // TODO: SHOW A TOAST MESSAGE
+        let message = `${cls} ${from} ${msg}`;
+        let webSocketToast = document.getElementById("webSocketToast");
+        webSocketToast.lastElementChild.innterHTML = message;
+        $("#webSocketToast").toast("show");
+        // const chatText = document.querySelector('#player-messages');
+        // chatText.innerHTML = `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
+    }
+
+    broadcastEvent(from, type, value) {
+        const event = {
+            from: from,
+            type: type,
+            value: value,
+        };
+        this.socket.send(JSON.stringify(event));
+    }
 }
 
 const game = new Game();
@@ -208,7 +247,12 @@ for (const button of buttons) {
     })
 }
 
-let closeToast = document.getElementById("closeToast");
-closeToast.addEventListener("click", (event) => {
+let closeScoreToast = document.getElementById("closeScoreToast");
+closeScoreToast.addEventListener("click", (event) => {
     $("#scoreToast").toast("hide");
+})
+
+let closeWebToast = document.getElementById("closeScoreToast");
+closeWebToast.addEventListener("click", (event) => {
+    $("#webSocketToast").toast("hide");
 })

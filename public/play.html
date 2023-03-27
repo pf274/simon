@@ -55,12 +55,23 @@
             <div class="toast" style="position: absolute; top: 0; right: 0;" id="scoreToast">
                 <div class="toast-header" style="display: flex; flex-direction: row;">
                     <strong class="mr-auto" id="toastTitle">New High Score</strong>
-                    <button type="button" class="ml-2 mb-1 close" id="closeToast" data-dismiss="toast" aria-label="Close">
+                    <button type="button" class="ml-2 mb-1 close" id="closeScoreToast" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="toast-body">
                     You just achieved a new personal high score! Congratulations!
+                </div>
+            </div>
+            <div class="toast" style="position: absolute; top: 0; right: 0;" id="webSocketToast">
+                <div class="toast-header" style="display: flex; flex-direction: row;">
+                    <strong class="mr-auto" id="toastTitle">Update</strong>
+                    <button type="button" class="ml-2 mb-1 close" id="closeWebToast" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    ...
                 </div>
             </div>
         </main>
