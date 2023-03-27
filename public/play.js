@@ -13,6 +13,9 @@ const button_info = {
     },
 }
 
+const GameEndEvent = 'gameEnd';
+const GameStartEvent = 'gameStart';
+
 function getLighterColor(color) {
     
     // get rgb values
@@ -66,6 +69,9 @@ class Game {
         // username
         const nameElement = [...document.getElementsByClassName("player-name")][0];
         nameElement.textContent = this.getPlayerName();
+
+        // web socket
+        this.configureWebSocket();
     }
 
     getPlayerName() {
@@ -153,6 +159,7 @@ class Game {
                 });
                 // console.log(`New High Score? ${new_high ? "Yes!" : "No."}`);
                 if (new_high) $("#scoreToast").toast("show");
+                this.broadcastEvent(this.getPlayerName(), GameEndEvent, score);
                 // do animation
                 setTimeout(() => {
                     this.playSound("lose.wav");
@@ -186,6 +193,7 @@ class Game {
         this.player_sequence = [];
         this.sequence = [];
         this.updateScore(0);
+        this.broadcastEvent(this.getPlayerName(), GameStartEvent, {});
         setTimeout(() => {
             this.playSequence();
         }, 1000 * 0.5);
@@ -215,13 +223,13 @@ class Game {
         // TODO: SHOW A TOAST MESSAGE
         let message = `${cls} ${from} ${msg}`;
         let webSocketToast = document.getElementById("webSocketToast");
-        webSocketToast.lastElementChild.innterHTML = message;
+        webSocketToast.lastElementChild.innerHTML = message;
         $("#webSocketToast").toast("show");
         // const chatText = document.querySelector('#player-messages');
         // chatText.innerHTML = `<div class="event"><span class="${cls}-event">${from}</span> ${msg}</div>` + chatText.innerHTML;
     }
-
     broadcastEvent(from, type, value) {
+        
         const event = {
             from: from,
             type: type,
