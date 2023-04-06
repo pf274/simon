@@ -1,1 +1,0 @@
-Deployment: ./deployFiles.sh -k ..\..\production.pem -h peterfullmer.net -s simon

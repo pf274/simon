@@ -1,76 +1,16 @@
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <!-- Tell browsers not to scale the viewport automatically -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <link href="./index.css" rel="stylesheet">
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-        <script src="./index.js"></script>
-        <title>Simon Says</title>
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <a class="navbar-brand">Simon<sup>&reg;</sup></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link disabled" aria-current="page" href="index.html">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="play.html">Play</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="scores.html">Scores</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="about.html">About</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <main class="content-wrap bg-body-secondary">
-            <div class="card mx-auto text-center" id="welcomeCard">
-                <div class="card-body">
-                    <h1 class="card-title">Welcome</h1>
-                    <p class="card-text">Login to Play!</p>
-                    <div class="mb-2">
-                        <input type="text" placeholder="Username" id="username"/>
-                        <input type="password" placeholder="Password" id="password"/>
-                    </div>
-                    <button class="btn btn-secondary" id="Sign Up" onclick="signup()">Sign Up</button>
-                    <button class="btn btn-primary" id="login" onclick="login()">Login</button>
-                </div>
-            </div>
-            <div class="modal fade" id="msgModal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content text-dark">
-                    <div class="modal-body">error message here</div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </main>
-        <footer class="bg-body-tertiary text-lg-start footer">
-            <div class="container p-4 text-center">
-                <p>Peter Fullmer - <a href="https://github.com/pf274/simon.git" target="_blank">Github Repository</a></p>
-            </div>
-        </footer>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Simon</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>

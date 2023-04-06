@@ -7,11 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Frontend (React)",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "start"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Backend (Express)",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\index.js"
+            "program": "${workspaceFolder}\\service\\index.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
         }
     ]
 }

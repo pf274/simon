@@ -1,21 +1,35 @@
 {
-  "name": "simon",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "simon-react",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
-    "cookie-parser": "^1.4.6",
-    "express": "^4.18.2",
-    "mongodb": "^5.1.0",
-    "uuid": "^9.0.0",
-    "ws": "^8.13.0"
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3",
+    "react-scripts": "5.0.1"
+  },
+  "proxy": "http://localhost:3000",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
